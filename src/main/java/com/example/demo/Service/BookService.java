@@ -52,4 +52,11 @@ public class BookService {
 		store.remove(idx);
 		System.out.println("Deleted!");
 	}
+	
+	
+	public BookStore getRecord(String name) {
+		return store.stream()
+				.filter(p-> p.getAuthorName().equals(name) || p.getPublisherName().equals(name))
+				.findFirst().get();
+	}
 }
