@@ -30,6 +30,14 @@ public class BookController {
 		return service.getRecordById(bookId);
 	}
 	
+	@GetMapping("book/{name}")
+	public BookStore getBookByName(@PathVariable String name) {
+		if (name == null || name.isEmpty()) {
+	        throw new IllegalArgumentException("Name must not be null or empty");
+	    }
+		return service.getRecord(name);
+	}
+	
 	@PostMapping("/book")
 	public void addBookToDB(@RequestBody BookStore book) {
 		service.addBook(book);
