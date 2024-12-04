@@ -20,12 +20,12 @@ public class BookController {
 	@Autowired
 	BookService service;
 	
-	@GetMapping("/")
+	@GetMapping("/books")
 	public List<BookStore> getBooks() {
 		return service.getBooks();
 	}
 	
-	@GetMapping("/{bookId}")
+	@GetMapping("/book/{bookId}")
 	public BookStore getBookById(@PathVariable int bookId){
 		return service.getRecordById(bookId);
 	}
@@ -36,6 +36,13 @@ public class BookController {
 	        throw new IllegalArgumentException("Name must not be null or empty");
 	    }
 		return service.getRecord(name);
+	}
+	@GetMapping("book/author/{name}")
+	public BookStore getBookbyAuthorName(@PathVariable String name) {
+		if (name == null || name.isEmpty()) {
+	        throw new IllegalArgumentException("Name must not be null or empty");
+	    }
+		return service.getRecordByName(name);
 	}
 	
 	@PostMapping("/book")
