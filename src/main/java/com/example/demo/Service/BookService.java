@@ -3,9 +3,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Model.*;
+import com.example.demo.Repository.BookRepo;
 
 @Service
 public class BookService {
@@ -16,8 +18,12 @@ public class BookService {
 			new BookStore(3,"test book 3","def","yz",false)
 			));
 	
+	@Autowired
+	private BookRepo repo;
+	
 	public List<BookStore> getBooks() {
-		return store;
+		List<BookStore> lst = repo.getAllBooks();
+		return lst;
 	}
 	
 	public BookStore getRecordById(int id) {
@@ -27,7 +33,8 @@ public class BookService {
 	}
 	
 	public void addBook(BookStore book) {
-		store.add(book);
+//		store.add(book);
+		repo.insert(book);
 		System.out.println("Book added!");
 	}
 	
@@ -39,7 +46,8 @@ public class BookService {
 				idx=i;
 			}
 		}
-		store.set(idx, book);
+//		store.set(idx, book);
+		repo.update(idx, book);
 		System.out.println("Updated!");
 	}
 	public void deleteRecord(int id) {
@@ -49,10 +57,16 @@ public class BookService {
 				idx=i;
 			}
 		}
-		store.remove(idx);
+//		store.remove(idx);
+		repo.delete(idx);
 		System.out.println("Deleted!");
 	}
 	
+	public BookStore getRecordByName(String name) {
+		return store.stream()
+				.filter(p->p.getName()==name)
+				.findFirst().get();
+	}
 	
 	public BookStore getRecord(String name) {
 		return store.stream()
