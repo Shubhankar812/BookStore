@@ -10,7 +10,7 @@ import com.example.demo.Model.*;
 import com.example.demo.Repository.BookRepo;
 
 @Service
-public class BookService {
+public class BookService implements ServiceInterface {
 	
 	List<BookStore> store = new ArrayList<>(Arrays.asList(
 			new BookStore(1,"test book 1","abc","xyz",false),
@@ -63,9 +63,10 @@ public class BookService {
 	}
 	
 	public BookStore getRecordByName(String name) {
-		return store.stream()
-				.filter(p->p.getName()==name)
-				.findFirst().get();
+//		return store.stream()
+//				.filter(p->p.getName()==name)
+//				.findFirst().get();
+		return (BookStore) repo.getBookByName(name);
 	}
 	
 	public BookStore getRecord(String name) {

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class BookRepo {
+public class BookRepo implements RepositoryInterface{
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -49,8 +49,54 @@ public class BookRepo {
 		 String query= "UPDATE BookStore SET name=?, authorName=?, publisherName=? WHERE id=?";
 		 jdbcTemplate.update(query,book.getName(),book.getAuthorName(),book.getPublisherName(),book.getId());
 	 }
-	 
-		
+	 public BookStore getBookById(int id) {
+		 String query="select * from BookStore WHERE id=?";
+			RowMapper<BookStore> mapper = new RowMapper<BookStore>() {
+				@Override
+				public BookStore mapRow(ResultSet rs,int rowNum) throws SQLException {
+					 return new BookStore(
+		                        rs.getInt("id"),
+		                        rs.getString("name"),
+		                        rs.getString("authorName"),
+		                        rs.getString("publisherName"), false
+		                );
+		            }
+		        };
+		        return (BookStore) jdbcTemplate.query(query, mapper,id);
+//		        return results;
+	 }
+	 public BookStore getBookByName(String name) {
+		 String query="select * from BookStore WHERE name=?";
+			RowMapper<BookStore> mapper = new RowMapper<BookStore>() {
+				@Override
+				public BookStore mapRow(ResultSet rs,int rowNum) throws SQLException {
+					 return new BookStore(
+		                        rs.getInt("id"),
+		                        rs.getString("name"),
+		                        rs.getString("authorName"),
+		                        rs.getString("publisherName"), false
+		                );
+		            }
+		        };
+		        BookStore results = (BookStore) jdbcTemplate.query(query, mapper,name);
+		        return results;
+	 }
+	 public BookStore getBookByAuthorOrPublisher(String name) {
+		 String query="select * from BookStore WHERE authorName=? OR publisherName=?";
+			RowMapper<BookStore> mapper = new RowMapper<BookStore>() {
+				@Override
+				public BookStore mapRow(ResultSet rs,int rowNum) throws SQLException {
+					 return new BookStore(
+		                        rs.getInt("id"),
+		                        rs.getString("name"),
+		                        rs.getString("authorName"),
+		                        rs.getString("publisherName"), false
+		                );
+		            }
+		        };
+		        return (BookStore) jdbcTemplate.query(query, mapper,name);
+//		        return results;
+	 }
 	}
 	
 

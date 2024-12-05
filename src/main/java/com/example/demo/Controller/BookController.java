@@ -25,7 +25,7 @@ public class BookController {
 		return service.getBooks();
 	}
 	
-	@GetMapping("/book/{bookId}")
+	@GetMapping("/bookid/{bookId}")
 	public BookStore getBookById(@PathVariable int bookId){
 		return service.getRecordById(bookId);
 	}
